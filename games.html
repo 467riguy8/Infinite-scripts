@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games - Pblocker</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<html lang="en-US">
+  <head>
+    <title>Games | Infinite Script</title>
+    <meta name="keywords" content="front-end web developer, unblocked, games, google sites, unblocked games mom, ublocked, code, coding, programmer, development, javascript, jquery, bootstrap, sass, less, git" />
+    <meta property="og:title" content="Welcome to 3kh0 lite, a lightweight, fast, and clean game site." />
+    <meta property="og:site_name" content="3kh0.github.io" />
+    <meta property="og:description" content="Welcome to 3kh0 lite, a lightweight, fast, and clean game site." />
+    <meta name="description" content="Welcome to 3kh0 lite, a lightweight, fast, and clean game site." />
+    <meta name="author" content="3kh0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/lite.png" />
+    <link rel="shortcut-icon" href="/lite.png" />
+    <script src="/js/main.js"></script>
     <style>
+      p {}
         :root {
             --background-column: #1a1a1d;
             --text-primary: #fff;
@@ -199,5 +208,59 @@
             </div>
         </div>
     </div>
-</body>
+   let games = [];
+      fetch("config/games.json")
+      .then((response) => response.json())
+      .then((data) => {
+        games = data;
+        const container = document.getElementById("game-container");
+        data.forEach((project) => {
+          const game = document.createElement("a");
+          game.href = project.link;
+            game.className = "game-link container";
+            game.innerHTML = `
+            <div class="game-tile">
+              <img class="game-icon" src="${project.imgSrc}" alt="icon" />
+              <p class="game-title">${project.title}</p>
+              </div>`;
+              container.appendChild(game);
+          });
+          document.getElementById("loader").style.display = "none";
+        })
+        .catch((error) => console.error("Error:", error));
+
+      function searchGames() {
+        const input = document.getElementById("search");
+        const filter = input.value.toUpperCase();
+        const container = document.getElementById("game-container");
+        container.innerHTML = "";
+        games
+          .filter((game) => game.title.toUpperCase().includes(filter))
+          .forEach((project) => {
+            const game = document.createElement("a");
+            game.href = project.link;
+            game.className = "game-link container";
+            game.innerHTML = `
+            <div class="game-tile">
+              <img class="game-icon" src="${project.imgSrc}" alt="icon" loading="lazy" />
+              <p class="game-title">${project.title}</p>
+              </div>`;
+            container.appendChild(game);
+          });
+        }
+        const backToTopButton = document.getElementById('back-to-top');
+        window.onscroll = function () {
+          if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopButton.style.display = "block";
+          } else {
+          backToTopButton.style.display = "none";
+        }
+      };
+
+      backToTopButton.onclick = function () {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      };
+    </script>
+  </body>
 </html>
